@@ -32,6 +32,27 @@ ARG DEFAULT_USER_SHELL="/bin/bash"
 ARG DEFAULT_USER="dev"
 
 #
+# LABELS
+#
+
+#
+# REFERENCE
+#
+#   - https://github.com/opencontainers/image-spec/blob/main/annotations.md
+#
+
+LABEL org.opencontainers.image.authors="Egon Braun <ebraun@schubergphilis.com>"
+LABEL org.opencontainers.image.created="${PROJECT_BUILD_DATE}"
+LABEL org.opencontainers.image.description="Container image to be used as a remote development environment in Visual Studio Code"
+LABEL org.opencontainers.image.licenses="ApacheV2"
+LABEL org.opencontainers.image.revision="${PROJECT_COMMIT}"
+LABEL org.opencontainers.image.source="https://github.com/schubergphilis/devcontainer"
+LABEL org.opencontainers.image.title="devcontainer"
+LABEL org.opencontainers.image.url="ghcr.io/schubergphilis/devcontainer:latest"
+LABEL org.opencontainers.image.vendor="Schuberg Philis"
+LABEL org.opencontainers.image.version="${PROJECT_VERSION}"
+
+#
 # OS
 #
 
