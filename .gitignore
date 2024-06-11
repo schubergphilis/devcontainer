@@ -19,10 +19,3 @@
 Icon
 Network Trash Folder
 Temporary Items
-
-#
-# PROJECT
-#
-
-.tmp/history/
-!.tmp/history/.gitkeep

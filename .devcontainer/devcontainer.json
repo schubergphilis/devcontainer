@@ -41,7 +41,6 @@
 
   "mounts": [
     "type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock",
-    "type=bind,consistency=cached,source=${localWorkspaceFolder}/.tmp/history,target=/home/dev/.history",
-    "type=bind,consistency=cached,source=${localEnv:HOME}/.aws,target=/home/dev/.aws"
+    "type=bind,consistency=cached,source=${localWorkspaceFolder}/tmp/history,target=/home/dev/.history"
   ]
 }
