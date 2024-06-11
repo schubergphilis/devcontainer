@@ -9,8 +9,8 @@ on:
 
 env:
   DOCKER_BUILDKIT: 1
-  PROJECT_DOCKER_HOST: ghcr.io
-  PROJECT_DOCKER_ORG: schubergphilis
+  PROJECT_DOCKER_HOST: ${{ vars.PROJECT_DOCKER_HOST }}
+  PROJECT_DOCKER_ORG: ${{ vars.PROJECT_DOCKER_ORG }}
   PROJECT_DOCKER_PLATFORMS: ${{ vars.PROJECT_DOCKER_PLATFORMS }}
   PROJECT_NAME: ${{ vars.PROJECT_NAME }}
 
@@ -95,7 +95,6 @@ jobs:
     name: CD
     runs-on: ubuntu-22.04
     needs: ci
-    environment: dev
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     permissions:
       id-token: write
