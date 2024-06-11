@@ -1,3 +1,7 @@
+#
+# Make
+#
+
 SHELL := /bin/bash
 
 #
@@ -25,25 +29,14 @@ PROJECT_VERSION ?= $(strip \
 )
 
 #
-# Project: AWS
-#
-
-PROJECT_AWS_ACCOUNT_ID ?= $(error PROJECT_AWS_ACCOUNT_ID is not set)
-PROJECT_AWS_REGION ?= eu-central-1
-
-#
 # Project: Docker
 #
 
 PROJECT_DOCKER_BUILDER := builder-$(PROJECT_NAME)
+PROJECT_DOCKER_HOST :=
+PROJECT_DOCKER_ORG ?= $(error PROJECT_DOCKER_ORG is not set)
 PROJECT_DOCKER_PLATFORMS ?= linux/arm64,linux/amd64
-
-#
-# Project: ECR
-#
-
-PROJECT_ECR_HOST ?= $(PROJECT_AWS_ACCOUNT_ID).dkr.ecr.$(PROJECT_AWS_REGION).amazonaws.com
-PROJECT_ECR_REPO ?= $(PROJECT_NAME)
+PROJECT_DOCKER_REPOSITORY ?= $(PROJECT_NAME)
 
 #
 # Image Arguments
@@ -55,9 +48,9 @@ DEFAULT_USER_SECONDARY_GROUPS ?= sudo,docker
 DEFAULT_USER_SHELL ?= /bin/bash
 DEFAULT_USER ?= dev
 
-#
+# ######################################################################################################################
 # TARGETS
-#
+# ######################################################################################################################
 
 .PHONY: all
 all: lint scan build test
@@ -133,8 +126,8 @@ release:
 		--builder "$(PROJECT_DOCKER_BUILDER)" \
 		--file "$(SOURCE_DIR)/Dockerfile" \
 		--platform "$(PROJECT_DOCKER_PLATFORMS)" \
-		--tag "$(PROJECT_ECR_HOST)/$(PROJECT_ECR_REPO):$(PROJECT_VERSION)" \
-		--tag "$(PROJECT_ECR_HOST)/$(PROJECT_ECR_REPO):latest" \
+		--tag "$(PROJECT_DOCKER_HOST)/$(PROJECT_DOCKER_ORG)/$(PROJECT_DOCKER_REPOSITORY):$(PROJECT_VERSION)" \
+		--tag "$(PROJECT_DOCKER_HOST)/$(PROJECT_DOCKER_ORG)/$(PROJECT_DOCKER_REPOSITORY):latest" \
 		--push \
 		.
 
