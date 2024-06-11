@@ -1,0 +1,30 @@
+# This is a container intended to be used to run tests which might require elevated permissions
+# hadolint global ignore=DL3002
+
+ARG PROJECT_NAME
+ARG PROJECT_VERSION
+
+FROM ${PROJECT_NAME}:${PROJECT_VERSION}
+
+ARG BUILDARCH
+ARG BUILDOS
+ARG BUILDPLATFORM
+ARG TARGETARCH
+ARG TARGETOS
+ARG TARGETPLATFORM
+
+USER root
+
+SHELL [ "/bin/bash", "-o", "pipefail", "-c" ]
+
+RUN export DEBIAN_FRONTEND="noninteractive" \
+    && apt-get update \
+    && apt-get -y install --no-install-recommends \
+        bats \
+    && apt-get autoremove -y \
+    && apt-get clean autoclean -y \
+    && rm -r /var/cache/* /var/lib/apt/lists/*
+
+COPY ./tests/* /tests/
+
+ENTRYPOINT [ "/usr/bin/bats", "/tests/" ]
