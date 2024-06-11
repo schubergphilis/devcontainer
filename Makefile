@@ -121,10 +121,6 @@ release:
 		--platform "$(PROJECT_DOCKER_PLATFORMS)" \
 		--use
 
-	@aws ecr batch-delete-image \
-		--repository-name "$(PROJECT_ECR_REPO)" \
-		--image-ids imageTag="latest"
-
 	@docker buildx build \
 		--build-arg PROJECT_BUILD_DATE="$(PROJECT_BUILD_DATE)" \
 		--build-arg PROJECT_COMMIT="$(PROJECT_COMMIT)" \
