@@ -1,0 +1,46 @@
+{
+  "name": "devcontainer",
+  "postAttachCommand": ".devcontainer/hooks/post_attach.sh",
+  "remoteUser": "dev",
+
+  "build": {
+    "dockerfile": "../src/Dockerfile",
+    "context": ".."
+  },
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.rulers": [80, 120],
+        "editor.wordBasedSuggestions": "off",
+        "explorer.excludeGitIgnore": true,
+        "extensions.ignoreRecommendations": true,
+        "git.enableCommitSigning": true,
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.shellIntegration.decorationsEnabled": "never",
+
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/usr/bin/bash"
+          }
+        }
+      },
+
+      "extensions": [
+        "eamodio.gitlens",
+        "EditorConfig.EditorConfig",
+        "esbenp.prettier-vscode",
+        "jetmartin.bats",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode.makefile-tools"
+      ]
+    }
+  },
+
+  "mounts": [
+    "type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock",
+    "type=bind,consistency=cached,source=${localWorkspaceFolder}/tmp/history,target=/home/dev/.history"
+  ]
+}
