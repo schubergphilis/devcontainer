@@ -36,7 +36,7 @@ Example of using this image directly in your `.devcontainer/devcontainer.json`:
 }
 ```
 
-You can also use it as a base image to your own container:
+You can also use it as a base image in your `Dockerfile`:
 
 ```
 FROM ghcr.io/schubergphilis/devcontainer:latest
