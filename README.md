@@ -26,6 +26,22 @@ You can see the [grawsp](https://github.com/schubergphilis/grawsp/tree/main/.dev
 project as an example. You can also read more about how to setup your own
 development container in Visual Studio Code [here](https://code.visualstudio.com/docs/devcontainers/containers).
 
+## Examples
+
+Example of using this image directly in your `.devcontainer/devcontainer.json`:
+
+```json
+{
+    "image": "ghcr.io/schubergphilis/devcontainer:latest"
+}
+```
+
+You can also use it as a base image to your own container:
+
+```
+FROM ghcr.io/schubergphilis/devcontainer:latest
+```
+
 ## License
 
 ```text
