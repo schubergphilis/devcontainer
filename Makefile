@@ -70,8 +70,8 @@ build:
 			--build-arg DEFAULT_USER_SECONDARY_GROUPS="$(DEFAULT_USER_SECONDARY_GROUPS)" \
 			--build-arg DEFAULT_USER_SHELL="$(DEFAULT_USER_SHELL)" \
 			--build-arg DEFAULT_USER="$(DEFAULT_USER)" \
-			--cache-from type=gha \
-          	--cache-to type=gha,mode=max \
+			--cache-from "type=$(PROJECT_DOCKER_CACHE_BACKEND)" \
+			--cache-to "type=$(PROJECT_DOCKER_CACHE_BACKEND),mode=max" \
 			--file "$(SOURCE_DIR)/Dockerfile" \
 			--platform "$$platform" \
 			--tag "$(PROJECT_NAME):$(PROJECT_VERSION)-$$arch" \
