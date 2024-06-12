@@ -33,6 +33,7 @@ PROJECT_VERSION ?= $(strip \
 #
 
 PROJECT_DOCKER_BUILDER := builder-$(PROJECT_NAME)
+PROJECT_DOCKER_CACHE_BACKEND ?= local
 PROJECT_DOCKER_HOST ?= index.docker.io
 PROJECT_DOCKER_ORG ?= $(error PROJECT_DOCKER_ORG is not set)
 PROJECT_DOCKER_PLATFORMS ?= linux/arm64,linux/amd64
@@ -69,6 +70,8 @@ build:
 			--build-arg DEFAULT_USER_SECONDARY_GROUPS="$(DEFAULT_USER_SECONDARY_GROUPS)" \
 			--build-arg DEFAULT_USER_SHELL="$(DEFAULT_USER_SHELL)" \
 			--build-arg DEFAULT_USER="$(DEFAULT_USER)" \
+			--cache-from type=gha \
+          	--cache-to type=gha,mode=max \
 			--file "$(SOURCE_DIR)/Dockerfile" \
 			--platform "$$platform" \
 			--tag "$(PROJECT_NAME):$(PROJECT_VERSION)-$$arch" \
@@ -124,6 +127,8 @@ release:
 		--build-arg DEFAULT_USER_SHELL="$(DEFAULT_USER_SHELL)" \
 		--build-arg DEFAULT_USER="$(DEFAULT_USER)" \
 		--builder "$(PROJECT_DOCKER_BUILDER)" \
+		--cache-from "type=$(PROJECT_DOCKER_CACHE_BACKEND)" \
+		--cache-to "type=$(PROJECT_DOCKER_CACHE_BACKEND),mode=max" \
 		--file "$(SOURCE_DIR)/Dockerfile" \
 		--platform "$(PROJECT_DOCKER_PLATFORMS)" \
 		--tag "$(PROJECT_DOCKER_HOST)/$(PROJECT_DOCKER_ORG)/$(PROJECT_DOCKER_REPOSITORY):$(PROJECT_VERSION)" \
@@ -158,6 +163,8 @@ test:
 		docker build \
 			--build-arg PROJECT_NAME="$(PROJECT_NAME)" \
 			--build-arg PROJECT_VERSION="$(PROJECT_VERSION)-$$arch" \
+			--cache-from type=gha \
+          	--cache-to type=gha,mode=max \
 			--file "$(SOURCE_DIR)/Dockerfile.test" \
 			--platform "$$platform" \
 			--tag "$(PROJECT_NAME)-test:$$arch" \

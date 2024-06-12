@@ -9,6 +9,7 @@ on:
 
 env:
   DOCKER_BUILDKIT: 1
+  PROJECT_DOCKER_CACHE_BACKEND: ${{ vars.PROJECT_DOCKER_CACHE_BACKEND }}
   PROJECT_DOCKER_HOST: ${{ vars.PROJECT_DOCKER_HOST }}
   PROJECT_DOCKER_ORG: ${{ vars.PROJECT_DOCKER_ORG }}
   PROJECT_DOCKER_PLATFORMS: ${{ vars.PROJECT_DOCKER_PLATFORMS }}
@@ -112,7 +113,7 @@ jobs:
       - name: Login to GitHub Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: ${{ PROJECT_DOCKER_HOST }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
