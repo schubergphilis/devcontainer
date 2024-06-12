@@ -6,6 +6,26 @@ This project defines a container image to be used as a development environment
 inside [Visual Studio Code](https://code.visualstudio.com/) through the
 [Remote Dev Container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
 
+# What is devcontainer?
+
+Devcontainer is a standard to define remote development environments using
+containers and how editors and IDE's should integrate them. The standard is
+described [here](https://containers.dev/).
+
+# How can I use it?
+
+First off, you need to use a text editor or IDE who supports devcontainers. The
+most famous one is Visual Studio Code with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+extension installed.
+
+Your project should also define a `.devcontainer/devcontainer.json`
+configuration that is loaded by the extension and then the remote environment
+is built, started and attached to.
+
+You can see the [grawsp](https://github.com/schubergphilis/grawsp/tree/main/.devcontainer)
+project as an example. You can also read more about how to setup your own
+development container in Visual Studio Code [here](https://code.visualstudio.com/docs/devcontainers/containers).
+
 ## License
 
 ```text
