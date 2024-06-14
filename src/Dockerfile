@@ -78,11 +78,16 @@ RUN export DEBIAN_FRONTEND="noninteractive" \
         libffi-dev \
         liblzma-dev \
         libncursesw5-dev \
+        libprocps-dev \
         libreadline-dev \
         libsqlite3-dev \
         libssl-dev \
+        libxi-dev \
+        libxi6 \
         libxml2-dev \
         libxmlsec1-dev \
+        libxtst-dev \
+        libxtst6 \
         locales \
         lsb-release \
         make \
