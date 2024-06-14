@@ -28,8 +28,8 @@
     [ "$status" -eq 0 ]
 }
 
-@test "developers is the primary group of dev user" {
-    run bash -c "id dev | grep -E 'gid=[0-9]+\(developers\)'"
+@test "dev is the primary group of dev user" {
+    run bash -c "id dev | grep -E 'gid=[0-9]+\(dev\)'"
     [ "$status" -eq 0 ]
 }
 
@@ -48,7 +48,7 @@
 #
 
 @test "sudo is configured" {
-    run ls /etc/sudoers.d/developers
+    run ls /etc/sudoers.d/dev
     [ "$status" -eq 0 ]
 }
 
