@@ -116,6 +116,11 @@
     [ "$status" -eq 0 ]
 }
 
+@test "rbenv is installed" {
+    run which rbenv
+    [ "$status" -eq 0 ]
+}
+
 @test "starship is installed" {
     run which starship
     [ "$status" -eq 0 ]
