@@ -239,6 +239,8 @@ RUN curl -fsSL https://pyenv.run | bash
 # INSTALL RBENV
 #
 
+ENV PATH="${HOME}/.rbenv/bin:${PATH}"
+
 RUN curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
 #
