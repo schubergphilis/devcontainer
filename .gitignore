@@ -19,3 +19,9 @@
 Icon
 Network Trash Folder
 Temporary Items
+
+#
+# PROJECT
+#
+
+tmp/history/.bash_history

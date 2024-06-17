@@ -26,7 +26,7 @@ ARG PROJECT_VERSION
 #
 
 ARG DEFAULT_LANG="C.UTF-8"
-ARG DEFAULT_USER_PRIMARY_GROUP="developers"
+ARG DEFAULT_USER_PRIMARY_GROUP="dev"
 ARG DEFAULT_USER_SECONDARY_GROUPS="sudo,docker"
 ARG DEFAULT_USER_SHELL="/bin/bash"
 ARG DEFAULT_USER="dev"
@@ -78,11 +78,16 @@ RUN export DEBIAN_FRONTEND="noninteractive" \
         libffi-dev \
         liblzma-dev \
         libncursesw5-dev \
+        libprocps-dev \
         libreadline-dev \
         libsqlite3-dev \
         libssl-dev \
+        libxi-dev \
+        libxi6 \
         libxml2-dev \
         libxmlsec1-dev \
+        libxtst-dev \
+        libxtst6 \
         locales \
         lsb-release \
         make \
@@ -110,9 +115,9 @@ RUN locale-gen "${DEFAULT_LANG}" \
 # INSTALL DOCKER
 #
 
-ENV VERSION_DOCKER_CLI="25.0.0-1"
-ENV VERSION_DOCKER_BUILDX_PLUGIN="0.12.1-1"
-ENV VERSION_DOCKER_COMPOSE_PLUGIN="2.24.1-1"
+ENV VERSION_DOCKER_CLI="26.1.4-1"
+ENV VERSION_DOCKER_BUILDX_PLUGIN="0.14.1-1"
+ENV VERSION_DOCKER_COMPOSE_PLUGIN="2.27.1-1"
 ENV FILENAME_DOCKER_SUFFIX="ubuntu.${VERSION_UBUNTU}~${VERSION_UBUNTU_NAME}_${TARGETARCH}.deb"
 ENV FILENAME_DOCKER_CLI="docker-ce-cli_${VERSION_DOCKER_CLI}~${FILENAME_DOCKER_SUFFIX}"
 ENV FILENAME_DOCKER_BUILDX_PLUGIN="docker-buildx-plugin_${VERSION_DOCKER_BUILDX_PLUGIN}~${FILENAME_DOCKER_SUFFIX}"
@@ -145,7 +150,7 @@ RUN curl -sSL -o /usr/local/bin/hadolint "${URL_HADOLINT}" \
 # INSTALL GIT DELTA
 #
 
-ENV VERSION_GIT_DELTA="0.16.5"
+ENV VERSION_GIT_DELTA="0.17.0"
 ENV FILENAME_GIT_DELTA="git-delta_${VERSION_GIT_DELTA}_${TARGETARCH}.deb"
 ENV URL_GIT_DELTA_BASE="https://github.com/dandavison/delta/releases/download/${VERSION_GIT_DELTA}"
 ENV URL_GIT_DELTA="${URL_GIT_DELTA_BASE}/${FILENAME_GIT_DELTA}"
@@ -231,12 +236,20 @@ ENV PATH="${PYENV_ROOT}/bin:$PATH"
 RUN curl -fsSL https://pyenv.run | bash
 
 #
+# INSTALL RBENV
+#
+
+ENV PATH="${HOME}/.rbenv/bin:${PATH}"
+
+RUN curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+
+#
 # OTHER TOOLS
 #
 
-ENV VERSION_CHECKOV="3.2.16"
-ENV VERSION_POETRY="1.7.1"
-ENV VERSION_PRECOMMIT="3.6.0"
+ENV VERSION_CHECKOV="3.2.136"
+ENV VERSION_POETRY="1.8.3"
+ENV VERSION_PRECOMMIT="3.7.1"
 
 #
 # PYTHON

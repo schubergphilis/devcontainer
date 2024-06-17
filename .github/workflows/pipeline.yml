@@ -92,12 +92,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build
-        env:
-          PROJECT_DOCKER_PLATFORMS: ${{ matrix.platforms }}
-        run: |
-          make build
-
       - name: Test
         env:
           PROJECT_DOCKER_PLATFORMS: ${{ matrix.platforms }}
