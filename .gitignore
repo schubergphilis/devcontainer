@@ -24,4 +24,9 @@ Temporary Items
 # PROJECT
 #
 
-tmp/history/.bash_history
+tmp/
+!tmp/history/.gitkeep
+.env.local
+
+# sbp-skills manifest (machine-specific)
+.sbp/
