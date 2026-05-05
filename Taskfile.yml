@@ -63,6 +63,7 @@ tasks:
       vars:
         - PROJECT_BUILD_DATE
         - PROJECT_COMMIT
+        - PROJECT_DOCKER_HOST
         - PROJECT_DOCKER_ORG
         - PROJECT_DOCKER_REPOSITORY
         - PROJECT_NAME
@@ -86,7 +87,7 @@ tasks:
           --build-arg DEFAULT_USER="{{.DEFAULT_USER}}" \
           --file "{{.SOURCE_DIR}}/Dockerfile" \
           --platform "{{.PROJECT_DOCKER_PLATFORMS}}" \
-          --tag "{{.PROJECT_DOCKER_ORG}}/{{.PROJECT_DOCKER_REPOSITORY}}:{{.PROJECT_VERSION}}" \
+          --tag "{{.PROJECT_DOCKER_HOST}}/{{.PROJECT_DOCKER_ORG}}/{{.PROJECT_DOCKER_REPOSITORY}}:{{.PROJECT_VERSION}}" \
           --push \
           {{.PROJECT_DOCKER_EXTRA_ARGS}} \
           .
