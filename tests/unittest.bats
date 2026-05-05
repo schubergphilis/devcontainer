@@ -106,6 +106,11 @@
     [ "$status" -eq 0 ]
 }
 
+@test "rtk is installed" {
+    run which rtk
+    [ "$status" -eq 0 ]
+}
+
 @test "sbp-skills is installed" {
     run which sbp-skills
     [ "$status" -eq 0 ]

@@ -417,7 +417,7 @@ RUN mkdir -p "${HOME}/.config" \
     && mkdir -p "${HOME}/.local/bin"
 
 # ------------------------------------------------------------------------------
-# INSTALL CLAUDE, SPEC-KIT AND SBP-SKILLS
+# INSTALL CLAUDE, SPEC-KIT, SBP-SKILLS AND RTK
 # ------------------------------------------------------------------------------
 
 #
@@ -425,6 +425,7 @@ RUN mkdir -p "${HOME}/.config" \
 #
 
 ENV VERSION_CLAUDE="2.1.104"
+ENV VERSION_RTK="0.38.0"
 
 #
 # INSTALL
@@ -440,6 +441,13 @@ RUN curl -fsSL -o /tmp/install.sh https://claude.ai/install.sh \
 RUN git clone "https://github.com/schubergphilis/agents.md.git" "${HOME}/.cache/sbp-skills/repo" \
     && cp "${HOME}/.cache/sbp-skills/repo/cli/sbp-skills" "${HOME}/.local/bin/sbp-skills" \
     && chmod +x "${HOME}/.local/bin/sbp-skills"
+
+RUN curl -fsSL -o /tmp/install.sh https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh \
+    && echo "0c46611d70d0eee64c43c6398f8b1fe057b7f0b052810bbeec09288898ba9a46  /tmp/install.sh" | sha256sum -c - \
+    && chmod +x /tmp/install.sh \
+    && RTK_VERSION="v${VERSION_RTK}" /tmp/install.sh \
+    && rm -f /tmp/install.sh
+
 
 # ------------------------------------------------------------------------------
 # INSTALL NVM
