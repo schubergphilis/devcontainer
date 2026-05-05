@@ -41,14 +41,14 @@ Example of using this image directly in your `.devcontainer/devcontainer.json`:
 
 ```json
 {
-    "image": "ghcr.io/schubergphilis/devcontainer:latest"
+    "image": "ghcr.io/schubergphilis/devcontainer:1.2.0"
 }
 ```
 
 You can also use it as a base image in your `Dockerfile`:
 
 ```
-FROM ghcr.io/schubergphilis/devcontainer:latest
+FROM ghcr.io/schubergphilis/devcontainer:1.2.0
 ```
 
 ## Installed Software
