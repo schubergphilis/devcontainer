@@ -85,8 +85,11 @@ The image is built on **Ubuntu 24.04 (Noble)** and bundles the following tools. 
 | [checkov](https://github.com/bridgecrewio/checkov) | 3.2.521 | Infrastructure-as-code security scanner |
 | [pre-commit](https://pre-commit.com) | 4.6.0 | Git pre-commit hook framework |
 | [Claude CLI](https://claude.ai/code) | 2.1.104 | Anthropic's Claude Code CLI |
+| [rtk](https://github.com/rtk-ai/rtk) | 0.38.0 | RTK AI CLI |
 | [specify-cli](https://github.com/github/spec-kit) | 0.7.3 | Specification toolkit |
 | [sbp-skills](https://github.com/schubergphilis/agents.md) | latest | Schuberg Philis skill extensions for Claude Code |
+| [pipenv](https://pipenv.pypa.io) | 2026.6.1 | Python dependency management tool |
+| [poetry](https://python-poetry.org) | 2.4.0 | Python packaging and dependency manager |
 
 ## Contributing
 
