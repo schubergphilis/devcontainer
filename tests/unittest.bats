@@ -91,6 +91,16 @@
     [ "$status" -eq 0 ]
 }
 
+@test "pipenv is installed" {
+    run which pipenv
+    [ "$status" -eq 0 ]
+}
+
+@test "poetry is installed" {
+    run which poetry
+    [ "$status" -eq 0 ]
+}
+
 @test "pyenv is installed" {
     run which pyenv
     [ "$status" -eq 0 ]

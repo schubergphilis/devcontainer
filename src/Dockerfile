@@ -526,6 +526,8 @@ RUN curl --proto '=https' --tlsv1.2 -fsSL -o /tmp/rustup-init.sh https://sh.rust
 #
 
 ENV VERSION_CHECKOV="3.2.521"
+ENV VERSION_PIPENV="2026.6.1"
+ENV VERSION_POETRY="2.4.0"
 ENV VERSION_PRECOMMIT="4.6.0"
 
 #
@@ -534,7 +536,9 @@ ENV VERSION_PRECOMMIT="4.6.0"
 
 RUN pipx install \
     "checkov==${VERSION_CHECKOV}" \
-    "pre-commit==${VERSION_PRECOMMIT}"
+    "pre-commit==${VERSION_PRECOMMIT}" \
+    "pipenv==${VERSION_PIPENV}" \
+    "poetry==${VERSION_POETRY}"
 
 # ------------------------------------------------------------------------------
 # CONFIGURE DIRENV
