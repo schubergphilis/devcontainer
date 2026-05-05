@@ -168,7 +168,7 @@ jobs:
       - name: Login to GitHub Registry
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
         with:
-          registry: ${{ vars.PROJECT_DOCKER_HOST }}
+          registry: ${{ env.PROJECT_DOCKER_HOST }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
