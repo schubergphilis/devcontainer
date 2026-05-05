@@ -1,4 +1,20 @@
+# ##############################################################################
+# WORKFLOW
+# ##############################################################################
+
+# ------------------------------------------------------------------------------
+# METADATA
+# ------------------------------------------------------------------------------
+
+#
+# GENERAL
+#
+
 name: Pipeline
+
+#
+# TRIGGER
+#
 
 on:
   pull_request:
@@ -7,119 +23,147 @@ on:
       - "v*"
   workflow_dispatch:
 
+# ##############################################################################
+# ENVIRONMENT VARIABLES
+# ##############################################################################
+
 env:
-  DOCKER_BUILDKIT: 1
-  PROJECT_DOCKER_CACHE_BACKEND: ${{ vars.PROJECT_DOCKER_CACHE_BACKEND }}
-  PROJECT_DOCKER_HOST: ${{ vars.PROJECT_DOCKER_HOST }}
-  PROJECT_DOCKER_ORG: ${{ vars.PROJECT_DOCKER_ORG }}
-  PROJECT_DOCKER_PLATFORMS: ${{ vars.PROJECT_DOCKER_PLATFORMS }}
-  PROJECT_NAME: ${{ vars.PROJECT_NAME }}
+  PROJECT_DOCKER_EXTRA_ARGS: ${{ vars.PROJECT_DOCKER_EXTRA_ARGS }}
+
+# ##############################################################################
+# JOBS
+# ##############################################################################
 
 jobs:
   lint:
     name: Lint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
       - name: Prepare
-        uses: schubergphilis/prepare-action@v1
+        uses: schubergphilis/prepare-action@68aa577339a0a7307c3c9c4d9141a9b632e1fff8  # v1.0.0
         with:
           type: container
           job: lint
 
+      - name: Load Environment Variables
+        run: |
+          direnv allow .
+          direnv export gha > "$GITHUB_ENV"
+
       - name: Lint
         run: |
-          make lint
+          task lint
 
   scan:
     name: Scan
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04-arm
     needs: lint
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
       - name: Prepare
-        uses: schubergphilis/prepare-action@v1
+        uses: schubergphilis/prepare-action@68aa577339a0a7307c3c9c4d9141a9b632e1fff8  # v1.0.0
         with:
           type: container
           job: scan
 
+      - name: Load Environment Variables
+        run: |
+          direnv allow .
+          direnv export gha > "$GITHUB_ENV"
+
       - name: Scan
         run: |
-          make scan
+          task scan
 
-  pre-ci:
-    name: Pre-CI
-    runs-on: ubuntu-22.04
+  ci-arm:
+    name: CI (arm64)
+    runs-on: ubuntu-24.04-arm
     needs: scan
-    outputs:
-      platforms: ${{ steps.platforms.outputs.value }}
-    steps:
-      - name: Get Platforms as JSON
-        id: platforms
-        run: |
-          echo "value=[\"$(echo $PROJECT_DOCKER_PLATFORMS | sed 's/,/\",\"/g')\"]" >> $GITHUB_OUTPUT
-
-  ci:
-    name: CI
-    runs-on: ubuntu-22.04
-    needs: pre-ci
-    strategy:
-      matrix:
-        platforms: ${{ fromJSON(needs.pre-ci.outputs.platforms) }}
-    permissions:
-      attestations: write
-      contents: read
-      id-token: write
-      packages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
       - name: Prepare
-        uses: schubergphilis/prepare-action@v1
+        uses: schubergphilis/prepare-action@68aa577339a0a7307c3c9c4d9141a9b632e1fff8  # v1.0.0
         with:
           type: container
           job: ci
 
-      - name: Login to GitHub Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ vars.PROJECT_DOCKER_HOST }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Load Environment Variables
+        run: |
+          direnv allow .
+          direnv export gha > "$GITHUB_ENV"
+
+      - name: Build
+        env:
+          PROJECT_DOCKER_PLATFORMS: linux/arm64
+        run: |
+          task build
 
       - name: Test
         env:
-          PROJECT_DOCKER_PLATFORMS: ${{ matrix.platforms }}
+          PROJECT_DOCKER_PLATFORMS: linux/arm64
         run: |
-          make test
+          task test
+
+  ci-amd:
+    name: CI (amd64)
+    runs-on: ubuntu-24.04
+    needs: scan
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - name: Prepare
+        uses: schubergphilis/prepare-action@68aa577339a0a7307c3c9c4d9141a9b632e1fff8  # v1.0.0
+        with:
+          type: container
+          job: ci
+
+      - name: Load Environment Variables
+        run: |
+          direnv allow .
+          direnv export gha > "$GITHUB_ENV"
+
+      - name: Build
+        env:
+          PROJECT_DOCKER_PLATFORMS: linux/amd64
+        run: |
+          task build
+
+      - name: Test
+        env:
+          PROJECT_DOCKER_PLATFORMS: linux/amd64
+        run: |
+          task test
 
   cd:
     name: CD
-    runs-on: ubuntu-22.04
-    needs: ci
+    runs-on: ubuntu-24.04-arm
+    needs: [ci-amd, ci-arm]
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-    permissions:
-      attestations: write
-      contents: read
-      id-token: write
-      packages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
       - name: Prepare
-        uses: schubergphilis/prepare-action@v1
+        uses: schubergphilis/prepare-action@68aa577339a0a7307c3c9c4d9141a9b632e1fff8  # v1.0.0
         with:
           type: container
           job: cd
 
+      - name: Load Environment Variables
+        run: |
+          direnv allow .
+          direnv export gha > "$GITHUB_ENV"
+
       - name: Login to GitHub Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
         with:
           registry: ${{ vars.PROJECT_DOCKER_HOST }}
           username: ${{ github.actor }}
@@ -127,4 +171,4 @@ jobs:
 
       - name: Release
         run: |
-          make release
+          task release
